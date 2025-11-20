@@ -37,13 +37,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Route health check
-  if (req.method === 'GET') {
-    res.status(200).json({ status: 'OK', message: 'Serveur API opérationnel' });
-    return;
-  }
-
-  // Route POST /api/commandes ou /api/index
+  // Route POST uniquement
   if (req.method === 'POST') {
     let connection;
     try {
@@ -94,6 +88,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Route non trouvée
-  res.status(404).json({ error: 'Route non trouvée' });
+  // Méthode non autorisée
+  res.status(405).json({ error: 'Méthode non autorisée' });
 }
