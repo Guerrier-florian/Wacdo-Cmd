@@ -1,0 +1,23 @@
+.Nf-button {
+  position: absolute; /* place the button below the white card */
+  left: 50%;
+  bottom: -4rem; /* pushes it a bit further under the layout card */
+  transform: translateX(-50%);
+  background-color: #FFBC0D;
+  color: #292929;
+  border: none;
+  padding: 0.9rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+h3 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 4rem;
+    color: #292929;
+}

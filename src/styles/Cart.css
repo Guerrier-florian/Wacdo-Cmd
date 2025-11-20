@@ -1,0 +1,269 @@
+.cart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cart-logo {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 2rem 0;
+}
+.cart-logo img {
+  width: 40px;
+  height: auto;
+  display: block;
+}
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Titles and headings in the cart set to black */
+.cart h2 {
+  color: #000;
+}
+.order-number {
+  margin: 0.25rem 0 0;
+  color: #000;
+  font-size: 0.95rem;
+}
+.order-mode {
+  margin: 0.25rem 0 0;
+  color: #000;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding-left: 0;
+}
+
+/* legacy .cart-clear removed from header; kept here if used elsewhere */
+.cart-clear {
+  background: black;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+}
+
+.cart-empty {
+  color: #000;
+}
+
+.cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+}
+
+.cart-item.simple .cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.cart-item-name {
+  font-weight: 600;
+  color: #000;
+  font-size: 1rem;
+}
+.cart-item-meta {
+  color: #000;
+  font-size: 0.9rem;
+  text-align: left;
+}
+.cart-item-meta > div {
+  text-transform: capitalize;
+}
+
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.line-total {
+  font-weight: 600;
+  color: #000;
+}
+.trash {
+  border: none;
+  background: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+.trash img {
+  display: block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+.trash:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.3);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+.trash:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.cart-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1rem;
+  font-size: 1.1rem;
+}
+.cart-total-label {
+  color: #000;
+}
+.cart-total-value {
+  font-weight: 800;
+  color: #000;
+}
+
+.cart-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+.cart-abandon {
+  background: black;
+  border: 1px solid #ddd;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cart-checkout {
+  width: auto;
+  margin-top: 0;
+  background: #ffc836;
+  border: none;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  color: black;
+  white-space: normal;
+  text-align: center;
+}
+.cart-checkout:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tablet and down */
+@media (max-width: 768px) {
+  .cart-items {
+    gap: 0.6rem;
+  }
+  .cart-item {
+    padding: 0.5rem 0.6rem;
+    border-radius: 8px;
+  }
+  .cart-item-name {
+    font-size: 0.95rem;
+  }
+  .cart-item-meta {
+    font-size: 0.85rem;
+  }
+  .trash {
+    width: 40px;
+    height: 40px;
+  }
+  .trash img {
+    width: 20px;
+    height: 20px;
+  }
+  .cart-footer {
+    font-size: 1rem;
+  }
+  .cart-actions {
+    justify-content: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .cart-actions > * {
+    flex: 1 1 50%;
+  }
+  .cart-abandon,
+  .cart-checkout {
+    padding: 0.8rem 0.9rem;
+  }
+}
+
+/* Medium screens where buttons may overflow side panel width */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .cart-actions {
+    justify-content: stretch;
+  }
+  .cart-actions > * {
+    flex: 1 1 50%;
+  }
+}
+
+/* Small phones */
+@media (max-width: 420px) {
+  .cart-logo {
+    margin-bottom: 1rem;
+  }
+  .cart-logo img {
+    width: 32px;
+  }
+  .order-number {
+    font-size: 0.9rem;
+  }
+  .order-mode {
+    font-size: 0.85rem;
+  }
+  .cart-item {
+    padding: 0.5rem;
+  }
+  .cart-item-name {
+    font-size: 0.9rem;
+  }
+  .cart-item-meta {
+    font-size: 0.8rem;
+  }
+  .trash {
+    width: 44px;
+    height: 44px;
+  }
+  .trash img {
+    width: 24px;
+    height: 24px;
+  }
+}

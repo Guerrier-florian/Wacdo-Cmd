@@ -1,0 +1,244 @@
+.mc-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.mc-title{
+  margin: 0 0 0.5rem 0;
+  text-align: left;
+  align-self: flex-start;
+  padding-left: 3rem;
+}
+
+.mc-product{
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  text-align: left;
+  align-self: flex-start;
+  max-width: calc(2 * (120px + 6rem + 2px) + 1rem);
+  padding-left: 3rem;
+  padding-bottom: 2rem;
+}
+
+.mc-actions{
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.mc-btn{
+  padding: 0.75rem 3rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #ffffff;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid #d3d3d3;
+}
+
+.mc-btn img {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  display: block;
+}
+
+.mc-btn span {
+  display: block;
+}
+
+.mc-btn:hover {
+  border:4px solid #ffcc00;
+}
+
+.mc-btn.secondary{
+  background: #ffffff;
+}
+
+.mc-close{
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  color: #000;
+  font-weight: 700;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.mc-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.mc-drink-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.mc-drink-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+  color: black
+}
+
+.mc-drink-display img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.mc-drink-display h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.mc-arrow {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-arrow img {
+  width: 24px;
+  height: 24px;
+}
+
+.mc-arrow.right img {
+  transform: rotate(180deg);
+}
+
+.mc-validate {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: #ffcc00;
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.mc-validate:hover {
+  background: #e6b800;
+}
+
+/* Drink size modal specific styles */
+.drink-size-btn {
+  min-width: 150px;
+}
+
+.drink-size-30 {
+  width: 80px !important;
+  max-width: 80px !important;
+  height: auto;
+}
+
+.mc-bottom-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.mc-cancel{
+  padding: 0 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d3d3d3;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.mc-cancel:hover{ border-color: #ffcc00; }
+
+/* Ensure validate and cancel share the same height in the bottom actions row */
+.mc-bottom-actions .mc-validate{
+  width: auto;
+  margin-top: 0;
+  height: 48px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.drink-size-50 {
+  width: 120px !important;
+  max-width: 120px !important;
+  height: auto;
+}
+
+.mc-btn.selected {
+  border: 4px solid #ffcc00;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10%;
+  border: 2px solid #d3d3d3;
+  background: #ffcc00;
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover {
+  border-color: #ffcc00;
+}
+
+.quantity-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 3rem;
+  text-align: center;
+   color: #000;
+}

@@ -1,0 +1,20 @@
+p{
+    color: black;
+    font-weight: 700;
+    font-size: large;
+}
+
+.img {
+    width: 100%;
+    height: auto;
+}
+
+.illustration-placeholder{
+    width: 20vh;
+    height: 12vh;
+    padding: 3rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border: 0.5rem solid #FFC836;
+    border-radius: 1rem;
+}

@@ -1,0 +1,134 @@
+.product-list {
+  width: 100%;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.product-list h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  text-transform: capitalize;
+  line-height: 1.2;
+}
+
+.product-list > p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.products-grid {
+  display: grid;
+  /* auto-fit pour éviter les colonnes vides et clamp pour une vraie réactivité */
+  grid-template-columns: repeat(auto-fit, minmax(clamp(140px, 22vw, 220px), 1fr));
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.product-card:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.product-card img {
+  width: clamp(80px, 10vw, 140px);
+  height: clamp(80px, 10vw, 140px);
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+}
+
+.product-card h3 {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #333;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #FFC836;
+  margin: 0.5rem 0;
+}
+
+/* add-to-cart supprimé: interaction via clic sur la carte */
+
+@media (max-width: 900px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  
+  .product-list h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  
+  .product-card img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .product-card h3 {
+    font-size: 0.9rem;
+    min-height: 2rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .product-card {
+    padding: 0.75rem;
+  }
+  
+  .product-card img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .product-card h3 {
+    font-size: 0.85rem;
+  }
+  
+  .product-price {
+    font-size: 1rem;
+  }
+  
+  .add-to-cart {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
