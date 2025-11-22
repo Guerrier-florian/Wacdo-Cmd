@@ -25,6 +25,9 @@ function getPool() {
 
 // Handler pour Vercel serverless
 export default async function handler(req, res) {
+  console.log('🚀 API commandes appelée - Méthode:', req.method);
+  console.log('🚀 Body:', req.body);
+  
   // CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -47,9 +50,11 @@ export default async function handler(req, res) {
 
       // Validation des données
       if (!Cnumber || total === undefined || !articles || !place) {
+        console.log('❌ Validation échouée - données manquantes');
         res.status(400).json({ 
           error: 'Données manquantes',
-          details: 'Cnumber, total, articles et place sont requis' 
+          details: 'Cnumber, total, articles et place sont requis',
+          received: { Cnumber, total, articles, place, table }
         });
         return;
       }
@@ -77,6 +82,7 @@ export default async function handler(req, res) {
     } catch (error) {
       console.error('❌ Erreur lors de l\'enregistrement:', error.message);
       console.error('Code erreur:', error.code);
+      console.error('Stack:', error.stack);
       res.status(500).json({
         error: 'Erreur serveur',
         details: error.message,
@@ -89,5 +95,6 @@ export default async function handler(req, res) {
   }
 
   // Méthode non autorisée
+  console.log('❌ Méthode non autorisée:', req.method);
   res.status(405).json({ error: 'Méthode non autorisée' });
 }
