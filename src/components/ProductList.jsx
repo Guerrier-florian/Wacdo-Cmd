@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addItem } from '../slices/shopping-cart-slice'
+import { fetchCategoryData } from '../api/config'
 import '../styles/ProductList.css'
 import MenuChoiceModal from './MenuChoiceModal'
 import DrinkSizeModal from './DrinkSizeModal'
@@ -15,14 +16,22 @@ const ProductList = ({ category }) => {
   useEffect(() => {
     if (!category) return
 
-    fetch('/tabs/produits.json')
-      .then(res => res.json())
+    fetchCategoryData(category.title)
       .then(data => {
-        // category.title correspond aux clés dans produits.json (menus, burgers, wraps, etc.)
-        const categoryProducts = data[category.title] || []
-        setProducts(categoryProducts)
+        console.log(`Products for ${category.title}:`, data);
+        if (Array.isArray(data)) {
+          // Filtrer uniquement les produits disponibles
+          const availableProducts = data.filter(product => product.disponible === true);
+          setProducts(availableProducts);
+        } else {
+          console.error('Products is not an array:', data);
+          setProducts([]);
+        }
       })
-      .catch(err => console.error('Failed to load products', err))
+      .catch(err => {
+        console.error('Failed to load products', err);
+        setProducts([]);
+      });
   }, [category])
 
   if (!category) {

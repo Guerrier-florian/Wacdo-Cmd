@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { fetchCategories } from '../api/config'
 import '../styles/CategorySlider.css'
 
 const CategorySlider = ({ onSelect, activeCategory }) => {
@@ -9,10 +10,20 @@ const CategorySlider = ({ onSelect, activeCategory }) => {
   const [itemWidth, setItemWidth] = useState(0)
 
   useEffect(() => {
-    fetch('/tabs/categories.json')
-      .then(res => res.json())
-      .then(data => setCategories(data))
-      .catch(err => console.error('Failed to load categories', err))
+    fetchCategories()
+      .then(data => {
+        console.log('Categories received:', data);
+        if (Array.isArray(data)) {
+          setCategories(data);
+        } else {
+          console.error('Categories is not an array:', data);
+          setCategories([]);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load categories', err);
+        setCategories([]);
+      });
   }, [])
 
   // compute visibleCount based on wrapper width

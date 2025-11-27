@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { fetchCategoryData } from '../api/config'
 import '../styles/MenuChoiceModal.css'
 import '../styles/Layout.css'
 
@@ -20,10 +21,13 @@ const MenuChoiceModal = ({ product, onChoose, onClose }) => {
   useEffect(() => {
     // Load drinks when moving to step 3
     if (step === 3) {
-      fetch('/tabs/produits.json')
-        .then(res => res.json())
+      fetchCategoryData('boissons')
         .then(data => {
-          setDrinks(data.boissons || [])
+          // Filtrer uniquement les boissons disponibles
+          const availableDrinks = Array.isArray(data) 
+            ? data.filter(drink => drink.disponible === true)
+            : [];
+          setDrinks(availableDrinks);
         })
         .catch(err => console.error('Failed to load drinks', err))
     }

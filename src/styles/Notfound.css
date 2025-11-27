@@ -1,7 +1,7 @@
 .Nf-button {
   position: absolute; /* place the button below the white card */
   left: 50%;
-  bottom: -4rem; /* pushes it a bit further under the layout card */
+  bottom: 2rem; /* pushes it a bit further under the layout card */
   transform: translateX(-50%);
   background-color: #FFBC0D;
   color: #292929;

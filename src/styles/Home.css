@@ -18,3 +18,12 @@ p{
     border: 0.5rem solid #FFC836;
     border-radius: 1rem;
 }
+
+@media screen and (max-width: 768px) {
+    .illustration-placeholder {
+        width: 10vh;
+        height: 6vh;
+        padding: 2rem;
+        margin: 1rem 1rem;
+    }
+}

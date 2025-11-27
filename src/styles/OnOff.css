@@ -1,6 +1,6 @@
 .onoff-chevalet {
   position: absolute;
-  top: -30%;
+  top: -15%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -17,8 +17,8 @@
 /* Reduce layout height for OnOff page */
 .layout .content-layout {
   height: auto;
-  min-height: 24rem;
-  max-height: 28rem;
+  min-height: 28rem;
+  max-height: 34rem;
 }
 
 .onoff {
@@ -89,4 +89,48 @@
 
 .onoff-submit:hover:not(:disabled) {
   background: #e6b800;
+}
+
+@media screen and (max-width: 768px) {
+  .onoff-chevalet {
+    top: -15%;
+  }
+
+  .onoff-chevalet img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .onoff {
+    padding: 1rem 0.5rem;
+    padding-top: 2.5rem;
+    gap: 0.75rem;
+  }
+
+  .onoff-title {
+    font-size: 1.2rem;
+  }
+
+  .onoff-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .onoff-digits {
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .onoff-digit-input {
+    width: 55px;
+    height: 75px;
+    font-size: 2.5rem;
+  }
+
+  .onoff-submit {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    width: 90%;
+    max-width: 250px;
+  }
 }
