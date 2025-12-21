@@ -94,7 +94,7 @@ const ProductList = ({ category }) => {
       )}
       
       <div className="products-grid">
-        {products.map(product => (
+        {products.filter(product => product.disponible === true).map(product => (
           <div 
             key={product.id} 
             className="product-card"
