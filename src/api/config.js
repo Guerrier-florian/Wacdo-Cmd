@@ -43,17 +43,34 @@ export async function fetchCategoryData(categoryName) {
     console.log(`✅ ${allProducts.length} produits récupérés au total`);
 
     // Transformer la structure Strapi v4 (attributes) en structure plate
-    const transformedProducts = allProducts.map(product => ({
-      id: product.id,
-      ...product.attributes
-    }));
+    const transformedProducts = allProducts.map(product => {
+      const attributes = product.attributes;
+      
+      // Transformer la relation category si elle existe
+      let category = null;
+      if (attributes.category?.data) {
+        category = {
+          id: attributes.category.data.id,
+          ...attributes.category.data.attributes
+        };
+      }
+      
+      return {
+        id: product.id,
+        ...attributes,
+        category
+      };
+    });
 
-    // Filtrer les produits par catégorie et disponibilité
+    console.log('🔍 Premier produit après transformation:', transformedProducts[0]);
+
+    // Filtrer les produits par catégorie
     const filteredProducts = transformedProducts.filter(product => {
       return product.category && product.category.title === categoryName;
     });
 
     console.log(`🔍 ${filteredProducts.length} produits trouvés pour la catégorie "${categoryName}"`);
+    console.log('📦 Produits filtrés:', filteredProducts.map(p => ({ nom: p.nom, disponible: p.disponible })));
     
     return filteredProducts;
   } catch (error) {
