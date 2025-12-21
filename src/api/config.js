@@ -42,8 +42,14 @@ export async function fetchCategoryData(categoryName) {
 
     console.log(`✅ ${allProducts.length} produits récupérés au total`);
 
-    // Filtrer les produits par catégorie
-    const filteredProducts = allProducts.filter(product => {
+    // Transformer la structure Strapi v4 (attributes) en structure plate
+    const transformedProducts = allProducts.map(product => ({
+      id: product.id,
+      ...product.attributes
+    }));
+
+    // Filtrer les produits par catégorie et disponibilité
+    const filteredProducts = transformedProducts.filter(product => {
       return product.category && product.category.title === categoryName;
     });
 
