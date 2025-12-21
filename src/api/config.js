@@ -43,24 +43,26 @@ export async function fetchCategoryData(categoryName) {
     console.log(`✅ ${allProducts.length} produits récupérés au total`);
 
     // Transformer la structure Strapi v4 (attributes) en structure plate
-    const transformedProducts = allProducts.map(product => {
-      const attributes = product.attributes;
-      
-      // Transformer la relation category si elle existe
-      let category = null;
-      if (attributes.category?.data) {
-        category = {
-          id: attributes.category.data.id,
-          ...attributes.category.data.attributes
+    const transformedProducts = allProducts
+      .filter(product => product && product.attributes) // Filtrer les produits invalides
+      .map(product => {
+        const attributes = product.attributes;
+        
+        // Transformer la relation category si elle existe
+        let category = null;
+        if (attributes.category?.data?.attributes) {
+          category = {
+            id: attributes.category.data.id,
+            ...attributes.category.data.attributes
+          };
+        }
+        
+        return {
+          id: product.id,
+          ...attributes,
+          category
         };
-      }
-      
-      return {
-        id: product.id,
-        ...attributes,
-        category
-      };
-    });
+      });
 
     console.log('🔍 Premier produit après transformation:', transformedProducts[0]);
 
