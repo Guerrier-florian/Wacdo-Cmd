@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const generateOrderNumber = () => {
-    return Math.floor(1000 + Math.random() * 9000);
+    // Générer un numéro unique basé sur le timestamp
+    // Utiliser les derniers chiffres du timestamp pour avoir un nombre à 4 chiffres
+    const timestamp = Date.now();
+    const orderNum = parseInt(timestamp.toString().slice(-4));
+    // S'assurer que c'est au moins 1000
+    return orderNum < 1000 ? orderNum + 1000 : orderNum;
 };
 
 const shoppingcartslice = createSlice({

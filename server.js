@@ -1,21 +1,24 @@
 import express from 'express';
 import cors from 'cors';
-import mysql from 'mysql2/promise';
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const app = express();
 const PORT = 3001;
 
-// Configuration de la connexion MySQL
+// Configuration de la connexion PostgreSQL Neon
 const dbConfig = {
-  host: 'srv1270.hstgr.io',
-  port: 3306,
-  user: 'u716694317_wacdo',
-  password: 'WacdoApp1#',
-  database: 'u716694317_wacdoapp',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  connectTimeout: 10000
+  host: process.env.POSTGRES_HOST,
+  port: parseInt(process.env.POSTGRES_PORT || '5432'),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DATABASE,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000
 };
 
 // Middleware
@@ -23,27 +26,22 @@ app.use(cors());
 app.use(express.json());
 
 // Test de connexion au démarrage
-let pool;
-try {
-  pool = mysql.createPool(dbConfig);
-  console.log('✅ Pool de connexions MySQL créé');
-  
-  // Test immédiat de la connexion
-  pool.getConnection()
-    .then(connection => {
-      console.log('✅ Test de connexion MySQL réussi');
-      connection.release();
-    })
-    .catch(err => {
-      console.error('❌ Erreur test connexion MySQL:', err.message);
-    });
-} catch (error) {
-  console.error('❌ Erreur création pool MySQL:', error.message);
-}
+const pool = new Pool(dbConfig);
+console.log('✅ Pool de connexions PostgreSQL créé');
+
+// Test immédiat de la connexion
+pool.connect()
+  .then(client => {
+    console.log('✅ Test de connexion PostgreSQL réussi');
+    client.release();
+  })
+  .catch(err => {
+    console.error('❌ Erreur connexion PostgreSQL:', err.message);
+  });
 
 // Endpoint pour enregistrer une commande
 app.post('/api/commandes', async (req, res) => {
-  let connection;
+  let client;
   try {
     const { Cnumber, total, articles, place, table } = req.body;
 
@@ -58,34 +56,45 @@ app.post('/api/commandes', async (req, res) => {
     }
 
     // Créer une connexion à la base de données
-    console.log('🔌 Connexion à MySQL...');
-    connection = await pool.getConnection();
-    console.log('✅ Connecté à MySQL');
+    console.log('🔌 Connexion à PostgreSQL...');
+    client = await pool.connect();
+    console.log('✅ Connecté à PostgreSQL');
 
     // Insérer la commande dans la table
-    const [result] = await connection.execute(
-      'INSERT INTO orders (Cnumber, total, articles, place, `table`) VALUES (?, ?, ?, ?, ?)',
-      [Cnumber, total, articles, place, table || null]
-    );
+    const query = `
+      INSERT INTO orders (cnumber, total, articles, place, "table", traite)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
+    `;
+    
+    const values = [
+      parseInt(Cnumber),
+      total.toString(),
+      articles,
+      place,
+      table ? parseInt(table) : null,
+      false
+    ];
 
-    console.log('✅ Commande enregistrée, ID:', result.insertId);
+    const result = await client.query(query, values);
+
+    console.log('✅ Commande enregistrée, ID:', result.rows[0].id);
 
     res.status(201).json({
       success: true,
       message: 'Commande enregistrée avec succès',
-      orderId: result.insertId
+      order: result.rows[0]
     });
 
   } catch (error) {
     console.error('❌ Erreur lors de l\'enregistrement:', error.message);
-    console.error('Code erreur:', error.code);
+    console.error('Stack:', error.stack);
     res.status(500).json({
       error: 'Erreur serveur',
-      details: error.message,
-      code: error.code
+      details: error.message
     });
   } finally {
-    if (connection) connection.release();
+    if (client) client.release();
   }
 });
 

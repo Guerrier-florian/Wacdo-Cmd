@@ -20,9 +20,7 @@ const ProductList = ({ category }) => {
       .then(data => {
         console.log(`Products for ${category.title}:`, data);
         if (Array.isArray(data)) {
-          // Filtrer uniquement les produits disponibles
-          const availableProducts = data.filter(product => product.disponible === true);
-          setProducts(availableProducts);
+          setProducts(data);
         } else {
           console.error('Products is not an array:', data);
           setProducts([]);

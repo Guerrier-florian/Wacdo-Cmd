@@ -1,27 +1,20 @@
-import mysql from 'mysql2/promise';
+import pkg from 'pg';
+const { Pool } = pkg;
 
-// Configuration de la connexion MySQL
-const dbConfig = {
-  host: process.env.MYSQL_HOST || 'srv1270.hstgr.io',
-  port: parseInt(process.env.MYSQL_PORT || '3306'),
-  user: process.env.MYSQL_USER || 'u716694317_wacdo',
-  password: process.env.MYSQL_PASSWORD || 'WacdoApp1#',
-  database: process.env.MYSQL_DATABASE || 'u716694317_wacdoapp',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  connectTimeout: 10000
-};
-
-// Pool de connexions
-let pool;
-
-function getPool() {
-  if (!pool) {
-    pool = mysql.createPool(dbConfig);
-  }
-  return pool;
-}
+// Configuration de la connexion PostgreSQL Neon
+const pool = new Pool({
+  host: process.env.POSTGRES_HOST,
+  port: parseInt(process.env.POSTGRES_PORT || '5432'),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DATABASE,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000
+});
 
 // Handler pour Vercel serverless
 export default async function handler(req, res) {
@@ -42,7 +35,7 @@ export default async function handler(req, res) {
 
   // Route POST uniquement
   if (req.method === 'POST') {
-    let connection;
+    let client;
     try {
       const { Cnumber, total, articles, place, table } = req.body;
 
@@ -60,36 +53,45 @@ export default async function handler(req, res) {
       }
 
       // Créer une connexion à la base de données
-      console.log('🔌 Connexion à MySQL...');
-      const currentPool = getPool();
-      connection = await currentPool.getConnection();
-      console.log('✅ Connecté à MySQL');
+      console.log('🔌 Connexion à PostgreSQL...');
+      client = await pool.connect();
+      console.log('✅ Connecté à PostgreSQL Neon');
 
       // Insérer la commande dans la table
-      const [result] = await connection.execute(
-        'INSERT INTO orders (Cnumber, total, articles, place, `table`) VALUES (?, ?, ?, ?, ?)',
-        [Cnumber, total, articles, place, table || null]
-      );
+      const query = `
+        INSERT INTO orders (cnumber, total, articles, place, "table", traite)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *
+      `;
+      
+      const values = [
+        parseInt(Cnumber),
+        total.toString(),
+        articles,
+        place,
+        table ? parseInt(table) : null,
+        false
+      ];
 
-      console.log('✅ Commande enregistrée, ID:', result.insertId);
+      const result = await client.query(query, values);
+
+      console.log('✅ Commande enregistrée, ID:', result.rows[0].id);
 
       res.status(201).json({
         success: true,
         message: 'Commande enregistrée avec succès',
-        orderId: result.insertId
+        order: result.rows[0]
       });
 
     } catch (error) {
       console.error('❌ Erreur lors de l\'enregistrement:', error.message);
-      console.error('Code erreur:', error.code);
       console.error('Stack:', error.stack);
       res.status(500).json({
         error: 'Erreur serveur',
-        details: error.message,
-        code: error.code
+        details: error.message
       });
     } finally {
-      if (connection) connection.release();
+      if (client) client.release();
     }
     return;
   }

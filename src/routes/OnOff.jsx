@@ -26,9 +26,12 @@ const OnOff = () => {
     if (code.length !== 3) return
     dispatch(setTableNumber(code))
 
+    // Générer un nouveau numéro de commande unique
+    const uniqueOrderNumber = Date.now(); // Timestamp complet pour garantir l'unicité
+
     // Build order for "sur place"
     const order = {
-      orderNumber,
+      orderNumber: uniqueOrderNumber,
       mode,
       tableNumber: code,
       items: cart.map(it => ({
@@ -45,13 +48,13 @@ const OnOff = () => {
       createdAt: new Date().toISOString(),
     }
 
-    // Préparer les données pour MySQL
+    // Préparer les données pour PostgreSQL
     const articlesString = order.items.map(item => 
       `${item.nom}${item.menuChoice ? ' (' + item.menuChoice + ')' : ''}${item.drinkSize ? ' - ' + item.drinkSize : ''} x${item.quantity}`
     ).join(', ')
 
     const dbOrder = {
-      Cnumber: orderNumber,
+      Cnumber: uniqueOrderNumber.toString(),
       total: order.total,
       articles: articlesString,
       place: 'sur place',
@@ -59,7 +62,7 @@ const OnOff = () => {
     }
 
     try {
-      // Envoyer à la base de données MySQL
+      // Envoyer à la base de données PostgreSQL
       await saveOrderToDatabase(dbOrder)
       
       // Sauvegarder dans Redux

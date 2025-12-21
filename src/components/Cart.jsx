@@ -100,6 +100,10 @@ const Cart = () => {
           disabled={cart.length === 0}
           onClick={async () => {
             if (!cart.length) return
+            
+            // Générer un nouveau numéro de commande unique à chaque validation
+            const uniqueOrderNumber = Date.now(); // Timestamp complet pour garantir l'unicité
+            
             if (mode === 'surplace') {
               // For sur place, we'll save after chevalet number is entered on OnOff page
               navigate('/onoff')
@@ -114,7 +118,7 @@ const Cart = () => {
               }, { total: 0, count: 0 })
 
               const order = {
-                orderNumber,
+                orderNumber: uniqueOrderNumber,
                 mode,
                 tableNumber: null,
                 items: cart.map(it => ({
@@ -131,13 +135,13 @@ const Cart = () => {
                 createdAt: new Date().toISOString(),
               }
 
-              // Préparer les données pour MySQL
+              // Préparer les données pour PostgreSQL
               const articlesString = order.items.map(item => 
                 `${item.nom}${item.menuChoice ? ' (' + item.menuChoice + ')' : ''}${item.drinkSize ? ' - ' + item.drinkSize : ''} x${item.quantity}`
               ).join(', ')
 
               const dbOrder = {
-                Cnumber: orderNumber,
+                Cnumber: uniqueOrderNumber.toString(),
                 total: order.total,
                 articles: articlesString,
                 place: 'à emporter',
@@ -145,7 +149,7 @@ const Cart = () => {
               }
 
               try {
-                // Envoyer à la base de données MySQL
+                // Envoyer à la base de données PostgreSQL
                 await saveOrderToDatabase(dbOrder)
                 
                 // Sauvegarder dans Redux

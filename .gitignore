@@ -16,6 +16,13 @@ dist-ssr
 .env
 .env.local
 .env.production
+.env.*.local
+
+# Fichiers de test et migration (peuvent contenir des identifiants)
+*test-db.js
+*test-pagination.js
+*check-table-structure.js
+*migrate-*.js
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +34,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vercel
+.vercel

@@ -23,11 +23,8 @@ const MenuChoiceModal = ({ product, onChoose, onClose }) => {
     if (step === 3) {
       fetchCategoryData('boissons')
         .then(data => {
-          // Filtrer uniquement les boissons disponibles
-          const availableDrinks = Array.isArray(data) 
-            ? data.filter(drink => drink.disponible === true)
-            : [];
-          setDrinks(availableDrinks);
+          const drinksList = Array.isArray(data) ? data : [];
+          setDrinks(drinksList);
         })
         .catch(err => console.error('Failed to load drinks', err))
     }
@@ -86,15 +83,15 @@ const MenuChoiceModal = ({ product, onChoose, onClose }) => {
 
         {step === 2 && (
           <>
-            <h2 className="mc-title">Choisissez votre accompagnement</h2>
+            <h2 className="mc-title">Choisissez Votre Accompagnement</h2>
             <p className="mc-product">Frites, potatoes, la pomme de terre dans tous ses états</p>
             <div className="mc-actions">
               <button className="mc-btn" onClick={() => handleSideSelect('frites')}>
-                <img src="/img/frites/MOYENNE_FRITE.png" alt="Frites" />
+                <img src="https://res.cloudinary.com/djnmszucm/image/upload/MOYENNE_FRITE_fkrl2g.png" alt="Frites" />
                 <span>Frites</span>
               </button>
               <button className="mc-btn secondary" onClick={() => handleSideSelect('potatoes')}>
-                <img src="/img/frites/GRANDE_POTATOES.png" alt="Potatoes" />
+                <img src="https://res.cloudinary.com/djnmszucm/image/upload/GRANDE_POTATOES_vemovw.png" alt="Potatoes" />
                 <span>Potatoes</span>
               </button>
             </div>
@@ -110,7 +107,13 @@ const MenuChoiceModal = ({ product, onChoose, onClose }) => {
                 <img src="/img/images/fleche-slider.png" alt="" />
               </button>
               <div className="mc-drink-display">
-                <img src={`/img${drinks[currentDrinkIndex].image}`} alt={drinks[currentDrinkIndex].nom} />
+                <img 
+                  src={drinks[currentDrinkIndex].image.startsWith('/') 
+                    ? `/img${drinks[currentDrinkIndex].image}` 
+                    : drinks[currentDrinkIndex].image
+                  } 
+                  alt={drinks[currentDrinkIndex].nom} 
+                />
                 <h3>{drinks[currentDrinkIndex].nom}</h3>
               </div>
               <button className="mc-arrow right" onClick={handleNextDrink} aria-label="Boisson suivante">
