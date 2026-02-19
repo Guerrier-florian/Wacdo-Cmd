@@ -1,29 +1,75 @@
-p{
+/* ═══════════════════════════════════════════════════════════════
+   Home.css — Page d'accueil (choix du mode de consommation)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Textes de la page d'accueil ── */
+p {
     color: black;
     font-weight: 700;
     font-size: large;
 }
 
-.img {
+/* ── Conteneur des deux options (sur place / à emporter) ──
+   Utilise flexbox pour afficher les cartes côte à côte.
+   Sur très petit écran elles s'empilent grâce à flex-wrap. */
+.content-layout span {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* empile les cartes si l'espace manque */
+    margin-top: 1rem;
     width: 100%;
-    height: auto;
 }
 
-.illustration-placeholder{
-    width: 20vh;
-    height: 12vh;
-    padding: 3rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    border: 0.5rem solid #FFC836;
+/* ── Carte d'option cliquable (image avec bordure jaune) ── */
+.illustration-placeholder {
+    width: 110px;
+    height: 80px;
+    padding: 1.5rem;
+    border: 0.4rem solid #FFC836;
+    border-radius: 1rem;
+    cursor: pointer;
+    object-fit: contain;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Effet au survol (desktop) */
+.illustration-placeholder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 14px rgba(255, 200, 54, 0.45);
+}
+
+/* Effet au focus clavier (accessibilité) */
+.illustration-placeholder:focus-visible {
+    outline: 3px solid #FFC836;
+    outline-offset: 4px;
     border-radius: 1rem;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Tablette (largeur ≤ 768px)
+   ═══════════════════════════════════════════════════════════════ */
 @media screen and (max-width: 768px) {
     .illustration-placeholder {
-        width: 10vh;
-        height: 6vh;
-        padding: 2rem;
-        margin: 1rem 1rem;
+        width: 85px;
+        height: 60px;
+        padding: 1.25rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Très petit mobile (largeur ≤ 400px)
+   ═══════════════════════════════════════════════════════════════ */
+@media screen and (max-width: 400px) {
+    .illustration-placeholder {
+        width: 65px;
+        height: 48px;
+        padding: 1rem;
+    }
+
+    .content-layout span {
+        gap: 1rem;
     }
 }

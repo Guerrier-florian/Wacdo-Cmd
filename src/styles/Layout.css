@@ -1,3 +1,9 @@
+/* ═══════════════════════════════════════════════════════════════
+   Layout.css — Composant Layout (fond avec bannière + carte blanche)
+   Utilisé par : Home, OnOff, Thanks, Notfound, modales
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Fond plein écran avec image de bannière ── */
 .layout {
     display: flex;
     align-items: center;
@@ -9,30 +15,39 @@
     background-image: url('/img/images/mc_landing_banner.png');
 }
 
-.content-layout{
+/* ── Carte blanche centrée (contenu principal) ── */
+.content-layout {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: 80vh;
-    height: 30rem;
+    /* Correction : utilisation de min() pour une largeur correcte
+       (80vh était incorrect car vh mesure la hauteur, pas la largeur) */
+    width: min(90%, 600px);
+    min-height: 20rem;
+    height: auto; /* S'adapte au contenu */
     background-color: #ffffff;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+    padding: 1.5rem;
     position: relative;
-    overflow: visible;
+    overflow: visible; /* Le bouton "Nouvelle commande" dépasse la carte */
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Mobile (largeur ≤ 768px)
+   ═══════════════════════════════════════════════════════════════ */
 @media screen and (max-width: 768px) {
+    /* Le fond s'adapte à la hauteur du contenu sur mobile */
     .layout {
         min-height: 100vh;
         height: auto;
         padding: 1rem 0;
-        align-items: center;
-        justify-content: flex-start;
+        align-items: flex-start;
+        justify-content: center;
     }
-    
+
+    /* La carte blanche occupe 90% de la largeur de l'écran */
     .content-layout {
         width: 90%;
         height: auto;

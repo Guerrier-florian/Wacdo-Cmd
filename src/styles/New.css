@@ -1,17 +1,20 @@
-/* Layout 70% / 30% responsive */
+/* ═══════════════════════════════════════════════════════════════
+   New.css — Page principale de commande
+   Layout 70% (catalogue) / 30% (récapitulatif)
+   Responsive : overlay panier sur mobile (<540px)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Conteneur principal : deux colonnes côte à côte ── */
 .new-page {
   display: flex;
   min-height: 100vh;
   align-items: stretch;
   width: 100%;
-  /* ensure two columns 70% / 30% on wider screens */
 }
 
+/* ── Colonne gauche : catalogue de produits (~70%) ── */
 .new-left {
-  overflow-y: auto; /* unique scrollbar pour la zone gauche */
-  /* Masque les scrollbars tout en gardant le défilement */
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none;    /* Firefox */
+  flex: 1;
   height: 100vh;
   background-color: #ffffff;
   padding: 2rem;
@@ -19,47 +22,41 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  /* Masque la barre de défilement visuellement tout en gardant le scroll */
+  -ms-overflow-style: none; /* Internet Explorer / Edge */
+  scrollbar-width: none;    /* Firefox */
 }
 
-/* WebKit (Chrome/Safari) : cacher la barre visuelle */
-.new-left::-webkit-scrollbar { display: none; width: 0; height: 0; }
+/* Chrome / Safari : cacher la scrollbar visuelle */
+.new-left::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
 
-/* Container for centering the slider */
+/* ── Conteneur du slider de catégories ── */
 .slider-container {
   max-width: 100%;
-  margin: 0 auto 1rem auto; /* espace sous le slider pour le titre */
+  margin: 0 auto 1rem auto; /* espace sous le slider */
   width: 100%;
-  padding: 0 60px;
+  padding: 0 60px;          /* espace pour les flèches de navigation */
   box-sizing: border-box;
   flex-shrink: 0;
 }
 
+/* ── Conteneur générique de centrage ── */
 .centered {
-  max-width: 90%;
+  max-width: 95%;
   margin: 0 auto;
   width: 100%;
   flex: 1;
-  /* pas de scroll interne pour éviter une seconde barre de défilement */
-  overflow: visible;
+  overflow: visible; /* évite une seconde barre de défilement */
 }
 
-@media (max-width: 900px) {
-  .slider-container {
-    max-width: 95%;
-    padding: 0 50px;
-  }
-}
-
-@media (max-width: 540px) {
-  .slider-container {
-    max-width: 100%;
-    padding: 0 40px;
-    margin-bottom: 0.75rem;
-  }
-}
-
+/* ── Colonne droite : récapitulatif de commande (~30%) ── */
 .new-right {
   width: 30%;
+  min-width: 260px;
   height: 100vh;
   background-color: #F1F1F1;
   padding: 2rem;
@@ -67,44 +64,66 @@
   overflow-y: auto;
 }
 
-/* Hide close button on desktop by default */
-.summary-close { display: none; }
+/* ── Bouton de fermeture (masqué par défaut sur desktop) ── */
+.summary-close {
+  display: none;
+}
 
-/* Hide mobile-only cart toggle by default (desktop) */
+/* ── Bouton panier flottant (masqué par défaut sur desktop) ── */
 .cart-toggle {
   display: none;
 }
 
-/* add high-specificity rule to ensure hidden by default on larger screens */
+/* Règle haute spécificité pour forcer l'état caché sur desktop */
 body .new-page .cart-toggle {
   display: none;
 }
 
-/* Responsive: on small screens stack columns */
-@media (max-width: 540px) {
-  .new-page {
-    flex-direction: column;
-  }
-  .new-left,
-  .new-right {
-    flex: none;
-    width: 100%;
-    height: auto; /* allow natural height on mobile */
-    padding: 1.25rem;
-    overflow-y: auto; /* unique scrollbar pour la zone gauche */
+p, h2 {
+  color: black;
 }
 
-/* Specific behavior for very small screens: keep desktop layout until 540px; under 540px hide summary column and show cart button */
+/* ═══════════════════════════════════════════════════════════════
+   Tablette (largeur < 900px)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .slider-container {
+    max-width: 95%;
+    padding: 0 50px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Mobile (largeur < 540px)
+   La colonne récapitulatif disparaît et devient un overlay latéral
+   ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 540px) {
+  /* Empiler les colonnes verticalement */
   .new-page {
-    /* still column flow for content, but we treat summary as overlay */
     flex-direction: column;
   }
 
-  .new-right {
-    display: none; /* hide summary column by default on very small screens */
+  /* La colonne gauche occupe toute la largeur */
+  .new-left {
+    flex: none;
+    width: 100%;
+    height: auto;
+    padding: 1.25rem;
   }
 
+  /* Réduire le padding du slider sur mobile */
+  .slider-container {
+    max-width: 100%;
+    padding: 0 40px;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Masquer la colonne récapitulatif par défaut */
+  .new-right {
+    display: none;
+  }
+
+  /* ── Bouton panier flottant (cercle jaune en bas à droite) ── */
   .cart-toggle {
     position: fixed;
     right: 1rem;
@@ -115,21 +134,53 @@ body .new-page .cart-toggle {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    display: flex !important;
+    display: flex !important; /* override le display:none du desktop */
     align-items: center;
     justify-content: center;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     outline: none;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; /* retire le flash bleu iOS */
   }
 
-  .cart-toggle svg { transform: scale(1.1); }
+  .cart-toggle svg {
+    transform: scale(1.1);
+  }
 
-  /* overlay styles when opened */
+  /* ── Badge rouge : nombre d'articles dans le panier ── */
+  .cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #e53935;
+    color: #fff;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    /* Animation d'apparition (pop) à chaque ajout d'article */
+    animation: badge-pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* Animation "pop" du badge lors de la mise à jour du compteur */
+  @keyframes badge-pop {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.2); }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+
+  /* ── Overlay fermé : toujours masqué ── */
   .new-right.overlay {
     display: none;
   }
+
+  /* ── Overlay ouvert : panneau latéral depuis la droite ── */
   .new-right.overlay.open {
     display: block;
     position: fixed;
@@ -138,16 +189,19 @@ body .new-page .cart-toggle {
     width: 85%;
     height: 100vh;
     z-index: 70;
-    box-shadow: -6px 0 24px rgba(0,0,0,0.2);
+    box-shadow: -6px 0 24px rgba(0, 0, 0, 0.2);
     background-color: #F1F1F1;
     padding: 1rem;
+    overflow-y: auto;
   }
 
+  /* ── Bouton de fermeture de l'overlay ── */
   .summary-close {
     position: absolute;
     right: 0.75rem;
     top: 0.75rem;
-    background: transparent;
+    background: #111;
+    color: #fff;
     border: none;
     font-size: 1.2rem;
     display: inline-flex;
@@ -156,24 +210,12 @@ body .new-page .cart-toggle {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-    background: #111; color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
   }
+
   .summary-close::before {
     content: '✕';
     line-height: 1;
   }
-}
-
-/* Small helper for centering content */
-.centered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-}
-
-p, h2{
-    color: black;
 }
